@@ -30,7 +30,7 @@ Telegram → FastAPI → Agent (picks tools) → SQL (Postgres) / RAG (Qdrant) �
                      Memory (Redis, per chat_id)
 ```
 
-Full details in **[FLOW.md](FLOW.md)**.
+Full details in **[docs/FLOW.md](docs/FLOW.md)**.
 
 ---
 
@@ -38,9 +38,9 @@ Full details in **[FLOW.md](FLOW.md)**.
 
 | Doc | What it covers |
 |---|---|
-| **[FLOW.md](FLOW.md)** | Complete architecture, data flow, tools, why each choice, glossary |
-| **[SCHEDULE.md](SCHEDULE.md)** | Dated build plan (Jul 4 → Jul 24 MVP), milestones, progress tracker |
-| **[CLOUD.md](CLOUD.md)** | GCP-first deployment plan, service mapping, cost paths, deploy checklist |
+| **[docs/FLOW.md](docs/FLOW.md)** | Complete architecture, data flow, tools, why each choice, glossary |
+| **[docs/SCHEDULE.md](docs/SCHEDULE.md)** | Dated build plan (Jul 4 → Jul 24 MVP), milestones, progress tracker |
+| **[docs/CLOUD.md](docs/CLOUD.md)** | GCP-first deployment plan, service mapping, cost paths, deploy checklist |
 
 ---
 
@@ -62,7 +62,7 @@ Full details in **[FLOW.md](FLOW.md)**.
 
 ## 🚀 Quick start (dev)
 
-> Full setup lands in Phase 0 (see [SCHEDULE.md](SCHEDULE.md)).
+> Full setup lands in Phase 0 (see [docs/SCHEDULE.md](docs/SCHEDULE.md)).
 
 ```bash
 # 1. clone
@@ -87,7 +87,7 @@ python bot/telegram_bot.py  # polling — message your bot from Telegram
 
 ## 📊 Status
 
-🚧 **In development** — see the progress tracker in [SCHEDULE.md](SCHEDULE.md).
+🚧 **In development** — see the progress tracker in [docs/SCHEDULE.md](docs/SCHEDULE.md).
 
 ## 📄 License
 
