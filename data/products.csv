@@ -1,0 +1,31 @@
+id,name,category,brand,price,stock,unit,description
+1,Pepsi 500ml,Beverages,Pepsi,40,120,bottle,Chilled carbonated cola soft drink in a 500ml bottle. Refreshing fizzy taste, best served cold.
+2,Pepsi 1L,Beverages,Pepsi,80,60,bottle,Family-size 1 litre carbonated cola soft drink. Great for sharing and parties.
+3,Coca-Cola 500ml,Beverages,Coca-Cola,42,90,bottle,Classic carbonated cola in a 500ml bottle. Crisp, refreshing and fizzy.
+4,Sprite 500ml,Beverages,Coca-Cola,40,75,bottle,Lemon-lime flavoured clear soda. Caffeine-free and thirst-quenching.
+5,Real Orange Juice 1L,Beverages,Dabur,110,35,carton,No-added-preservative orange fruit juice rich in vitamin C. Healthy breakfast drink.
+6,Bisleri Water 1L,Beverages,Bisleri,20,300,bottle,Packaged mineral drinking water, 1 litre. Safe, clean and hydrating.
+7,Lays Classic Salted,Snacks,Lays,20,200,pack,Crispy thin potato chips with classic salted flavour. Perfect crunchy snack.
+8,Kurkure Masala Munch,Snacks,Kurkure,20,180,pack,Spicy crunchy corn puff snack with tangy Indian masala flavour.
+9,Parle-G Biscuits,Snacks,Parle,10,250,pack,Glucose biscuits, lightly sweet and crunchy. A classic tea-time favourite.
+10,Oreo Chocolate,Snacks,Cadbury,30,140,pack,Chocolate sandwich cookies with creamy vanilla filling. Loved by kids.
+11,HP Anti-Dandruff Shampoo,Personal Care,HP,85,47,bottle,Anti-dandruff shampoo that nourishes dry frizzy hair and soothes an itchy flaky scalp. Gentle for daily use.
+12,HP Smooth Care Shampoo,Personal Care,HP,90,52,bottle,Moisturising shampoo for smooth silky hair. Reduces frizz and adds shine to damaged strands.
+13,Dove Soap,Personal Care,Dove,45,160,bar,Moisturising beauty bar with 1/4 hydrating cream. Gentle on sensitive dry skin.
+14,Colgate MaxFresh,Personal Care,Colgate,55,130,tube,Fluoride toothpaste with cooling crystals for long-lasting fresh breath and cavity protection.
+15,Head & Shoulders 340ml,Personal Care,P&G,180,40,bottle,Anti-dandruff shampoo that removes flakes and relieves scalp itch. Suitable for oily scalp.
+16,Nivea Body Lotion 200ml,Personal Care,Nivea,150,55,bottle,Deep nourishing body lotion for very dry skin. 48-hour moisture with almond oil.
+17,Surf Excel 1kg,Household,Surf Excel,120,80,pack,Detergent powder that removes tough stains in fewer washes. Suitable for hand and machine wash.
+18,Vim Dishwash Gel 500ml,Household,Vim,99,95,bottle,Lemon dishwash gel that cuts through grease and leaves utensils sparkling clean.
+19,Harpic Toilet Cleaner 1L,Household,Harpic,95,70,bottle,Powerful toilet cleaner that removes stains and kills 99.9% of germs. Fresh fragrance.
+20,Good Knight Refill,Household,Good Knight,80,110,unit,Mosquito repellent liquid refill for up to 45 nights of protection against dengue mosquitoes.
+21,Aashirvaad Atta 5kg,Staples,Aashirvaad,270,65,bag,Whole wheat flour for soft rotis. 100% atta with natural fibre, no maida.
+22,Tata Salt 1kg,Staples,Tata,28,220,pack,Iodised free-flow vacuum-evaporated salt. Trusted for daily cooking.
+23,Fortune Sunflower Oil 1L,Staples,Fortune,140,90,bottle,Refined sunflower cooking oil rich in vitamins. Light and healthy for daily use.
+24,Daawat Basmati Rice 1kg,Staples,Daawat,150,75,bag,Long-grain aromatic basmati rice. Fluffy non-sticky grains ideal for biryani.
+25,Amul Butter 100g,Dairy,Amul,56,140,pack,Pasteurised salted table butter. Rich creamy taste, perfect on toast and parathas.
+26,Amul Milk 500ml,Dairy,Amul,27,180,pouch,Toned homogenised pasteurised milk. Fresh and nutritious for daily consumption.
+27,Nestle Curd 400g,Dairy,Nestle,40,85,cup,Thick and creamy fresh dahi. Probiotic-rich, great with meals.
+28,Britannia Cheese Slices,Dairy,Britannia,120,60,pack,Processed cheese slices, 10 pieces. Melts smoothly, great for sandwiches and burgers.
+29,Maggi Noodles 70g,Instant Food,Maggi,14,300,pack,2-minute masala instant noodles with tastemaker. Quick and tasty snack.
+30,Kissan Mixed Fruit Jam 500g,Instant Food,Kissan,150,50,jar,Mixed fruit jam made from real fruit. Sweet spread for bread and rotis.

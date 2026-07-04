@@ -1,0 +1,13 @@
+.git/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+docs/
+*.md
+qdrant_storage/
+postgres_data/
+redis_data/
+.vscode/
+.idea/
