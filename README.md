@@ -41,6 +41,7 @@ Full details in **[docs/FLOW.md](docs/FLOW.md)**.
 | **[docs/FLOW.md](docs/FLOW.md)** | Complete architecture, data flow, tools, why each choice, glossary |
 | **[docs/SCHEDULE.md](docs/SCHEDULE.md)** | Dated build plan (Jul 4 → Jul 24 MVP), milestones, progress tracker |
 | **[docs/CLOUD.md](docs/CLOUD.md)** | GCP-first deployment plan, service mapping, cost paths, deploy checklist |
+| **[docs/STRUCTURE.md](docs/STRUCTURE.md)** | Every folder & file explained, with use cases and status |
 
 ---
 

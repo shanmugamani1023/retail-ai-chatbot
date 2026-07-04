@@ -1,31 +1,101 @@
 """Agent tools — Phase 1.
 
-The docstrings below are critical: the tool-calling agent reads them to
-decide which tool to use. Good docstrings ARE the router.
+Two tools the agent can call. The docstrings are critical: the tool-calling
+agent reads them to decide which tool to use. Good docstrings ARE the router.
+
+  - search_products     : semantic search over descriptions (RAG / Qdrant)
+  - query_inventory_sql : exact facts via read-only SQL (Postgres)
+
+Connections are created lazily and cached (module-level singletons) so we
+don't reconnect on every call.
 """
+from sqlalchemy import create_engine, text
 from langchain_core.tools import tool
+from langchain_qdrant import QdrantVectorStore
+
+from src.config import settings
+from src.ingest import get_embeddings
+
+# --- lazy singletons -------------------------------------------------------
+_vectorstore = None
+_engine = None
 
 
-@tool
-def query_inventory_sql(query: str) -> str:
-    """Get EXACT counts, stock levels, or prices from the inventory database.
+def _get_vectorstore() -> QdrantVectorStore:
+    global _vectorstore
+    if _vectorstore is None:
+        _vectorstore = QdrantVectorStore.from_existing_collection(
+            embedding=get_embeddings(),
+            url=settings.qdrant_url,
+            collection_name=settings.qdrant_collection,
+        )
+    return _vectorstore
 
-    Use this for questions about numbers, such as:
-    how many, total stock, quantity available, cheapest, most expensive,
-    price of X, or items under/over a given price.
-    """
-    raise NotImplementedError("Phase 1: implement SQL tool")
+
+def _get_engine():
+    global _engine
+    if _engine is None:
+        _engine = create_engine(settings.postgres_url)
+    return _engine
 
 
+# --- tools -----------------------------------------------------------------
 @tool
 def search_products(query: str) -> str:
     """Search product DESCRIPTIONS for recommendations or features.
 
     Use this for descriptive / semantic questions, such as:
     'is X good for dry hair', 'recommend a soda', 'tell me about X',
-    'what products help with dandruff', or any question about qualities.
+    'what helps with dandruff', or any question about product qualities.
+
+    Input: a natural-language description of what the customer wants.
     """
-    raise NotImplementedError("Phase 1: implement RAG tool")
+    docs = _get_vectorstore().similarity_search(query, k=settings.top_k)
+    if not docs:
+        return "No matching products found."
+    lines = []
+    for d in docs:
+        m = d.metadata
+        lines.append(
+            f"- {m['name']} ({m['brand']}, {m['category']}) "
+            f"- Rs.{m['price']:.0f}, stock: {m['stock']} {m['unit']}. "
+            f"{d.page_content.split('. ', 1)[-1]}"
+        )
+    return "\n".join(lines)
 
 
-TOOLS = [query_inventory_sql, search_products]
+@tool
+def query_inventory_sql(sql_query: str) -> str:
+    """Run a read-only SQL SELECT for EXACT counts, prices, or stock.
+
+    Use this for numeric / exact questions: how many, total stock, cheapest,
+    most expensive, price of X, items under/over a price, counts by category.
+
+    Input: a valid PostgreSQL SELECT statement against this table:
+
+      products(
+        id INTEGER, name TEXT, category TEXT, brand TEXT,
+        price NUMERIC, stock INTEGER, unit TEXT, description TEXT
+      )
+
+    Example: SELECT name, stock FROM products WHERE name ILIKE '%pepsi%';
+    Only SELECT statements are allowed.
+    """
+    q = sql_query.strip().rstrip(";")
+    if not q.lower().startswith("select"):
+        return "Only SELECT statements are allowed."
+    try:
+        with _get_engine().connect() as conn:
+            result = conn.execute(text(q))
+            cols = list(result.keys())
+            rows = result.fetchall()
+    except Exception as exc:  # surface the error so the agent can retry/rephrase
+        return f"SQL error: {exc}"
+    if not rows:
+        return "No rows matched."
+    header = " | ".join(cols)
+    body = "\n".join(" | ".join(str(v) for v in row) for row in rows)
+    return f"{header}\n{body}"
+
+
+TOOLS = [search_products, query_inventory_sql]
