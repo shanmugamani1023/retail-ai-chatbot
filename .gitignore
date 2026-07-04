@@ -1,0 +1,40 @@
+# --- Secrets ---
+.env
+*.key
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+build/
+dist/
+.venv/
+venv/
+env/
+.python-version
+
+# --- Data stores / local volumes ---
+qdrant_storage/
+postgres_data/
+redis_data/
+*.db
+*.sqlite3
+chroma_db/
+
+# --- Model / embedding caches ---
+.cache/
+models/
+
+# --- IDE / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Logs ---
+*.log
+logs/
+
+# --- Notebooks ---
+.ipynb_checkpoints/
