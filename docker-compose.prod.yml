@@ -1,0 +1,75 @@
+# Production stack — run the WHOLE app on one VM.
+#
+#   docker compose -f docker-compose.prod.yml up -d --build
+#
+# Requires a .env file next to this one containing at least:
+#   GROQ_API_KEY, TELEGRAM_BOT_TOKEN   (and optionally POSTGRES_PASSWORD)
+#
+# The app services (api, bot) reach the stores by their service NAME
+# (redis / postgres / qdrant) — that's why the URLs below differ from dev's
+# localhost. `environment` overrides any localhost values in .env.
+services:
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: retail
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-retail}
+      POSTGRES_DB: retail
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U retail"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    restart: unless-stopped
+    volumes:
+      - qdrant_storage:/qdrant/storage
+
+  api:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      REDIS_URL: redis://redis:6379/0
+      POSTGRES_URL: postgresql+psycopg://retail:${POSTGRES_PASSWORD:-retail}@postgres:5432/retail
+      QDRANT_URL: http://qdrant:6333
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_started
+    command: uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+  bot:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      TELEGRAM_MODE: polling
+      API_URL: http://api:8000
+    depends_on:
+      - api
+    command: python -m bot.telegram_bot
+
+volumes:
+  postgres_data:
+  redis_data:
+  qdrant_storage:
