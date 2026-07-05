@@ -54,9 +54,10 @@ Everything that *thinks* lives here.
 |---|---|---|
 | `config.py` | Central settings. Reads everything (DB URLs, API keys, model names, tuning) from environment / `.env`. One place for all config — this is what makes moving to the cloud a config change, not a rewrite. | ✅ |
 | `ingest.py` | The ingestion pipeline. Loads `data/products.csv`, writes structured rows to **PostgreSQL**, and embeds product descriptions into **Qdrant**. Run with `python -m src.ingest`. | ✅ |
-| `tools.py` | The two agent tools: `search_products` (semantic search / RAG over Qdrant) and `query_inventory_sql` (read-only SQL over Postgres). Their **docstrings** are what the agent reads to decide which to call. | ✅ |
-| `llm.py` | Sets up the Groq LLM client with retry/fallback (the agent's "brain"). | 🔨 Phase 2 |
-| `agent.py` | Builds the tool-calling agent over the tools and wires per-user (chat_id) memory backed by Redis. | 🔨 Phase 2 |
+| `tools.py` | The two agent tools: `search_products` (semantic search / RAG over Qdrant) and `query_inventory_sql` (read-only SQL over Postgres, grounded with real categories + matching tips). Their **docstrings** are what the agent reads to decide which to call. | ✅ |
+| `llm.py` | Groq LLM client (`openai/gpt-oss-20b`) with timeout + retry; `gpt-oss-120b` as fallback model. | ✅ |
+| `agent.py` | The tool-calling agent (LangChain v1 `create_agent`) + system prompt; wires per-session (chat_id) memory in Redis via `RedisChatMessageHistory`; `answer(message, session_id)` is the one entry point. | ✅ |
+| `ratelimit.py` | Fixed-window per-session rate limiting in Redis (N messages / window). | ✅ |
 | `__init__.py` | Empty file marking `src/` as a Python package, so `from src.config import settings` works. | ✅ |
 
 ---
@@ -67,7 +68,7 @@ The FastAPI backend: the entry point that receives requests and returns answers.
 
 | File | Use case | Status |
 |---|---|---|
-| `main.py` | Defines the HTTP endpoints: `GET /health` (is the app alive?), `GET /ready` (are the stores reachable?), `POST /chat` (main: message + session_id → answer), `POST /upload-catalog` (re-ingest the catalog). | ✅ skeleton (`/chat` gets the agent in Phase 2) |
+| `main.py` | HTTP endpoints: `GET /health` (liveness), `GET /ready` (pings Redis+Postgres+Qdrant), `POST /chat` (routes through the agent, with rate limiting), `POST /upload-catalog` (re-ingest). | ✅ |
 | `__init__.py` | Marks `api/` as a Python package. | ✅ |
 
 ---
@@ -79,7 +80,7 @@ between Telegram and the API.
 
 | File | Use case | Status |
 |---|---|---|
-| `telegram_bot.py` | Receives Telegram messages, forwards them to the API's `/chat` (using the Telegram `chat_id` as the `session_id`), and sends replies back. Polling in dev, webhook in prod (chosen by config). | 🔨 Phase 3 |
+| `telegram_bot.py` | Receives Telegram messages, forwards them to the API's `/chat` (using the Telegram `chat_id` as the `session_id`), and sends replies back. Typing indicator + long-message splitting. Polling in dev, webhook in prod (chosen by config). | ✅ |
 | `__init__.py` | Marks `bot/` as a Python package. | ✅ |
 
 ---
