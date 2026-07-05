@@ -38,3 +38,6 @@ logs/
 
 # --- Notebooks ---
 .ipynb_checkpoints/
+
+# Claude Code local context (keep local, not in repo)
+CLAUDE.md
