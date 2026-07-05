@@ -28,6 +28,8 @@ Rules:
 - You may use BOTH tools when needed (e.g. "cheapest dandruff shampoo").
 - Prices are in Indian Rupees (Rs.). Keep replies short, friendly, and clear.
 - If nothing matches, say so honestly.
+- Reply in plain text suitable for a chat app (Telegram). Do NOT use markdown
+  tables or headings; use short sentences or simple dash bullets. Keep it concise.
 """
 
 # Primary agent (built once at import). It's a compiled LangGraph graph:

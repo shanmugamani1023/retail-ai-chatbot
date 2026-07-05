@@ -63,32 +63,62 @@ Full details in **[docs/FLOW.md](docs/FLOW.md)**.
 
 ## 🚀 Quick start (dev)
 
-> Full setup lands in Phase 0 (see [docs/SCHEDULE.md](docs/SCHEDULE.md)).
-
 ```bash
 # 1. clone
-git clone https://github.com/<user>/retail-ai-chatbot.git
+git clone https://github.com/shanmugamani1023/retail-ai-chatbot.git
 cd retail-ai-chatbot
 
-# 2. secrets
-cp .env.example .env        # add GROQ_API_KEY and TELEGRAM_BOT_TOKEN
+# 2. Python env + deps
+python -m venv .venv
+.venv\Scripts\activate            # Windows  (source .venv/bin/activate on macOS/Linux)
+pip install -r requirements.txt
 
-# 3. start data stores
-docker-compose up -d        # Redis + Postgres + Qdrant
+# 3. secrets — get keys from console.groq.com/keys and @BotFather
+cp .env.example .env              # then edit: GROQ_API_KEY, TELEGRAM_BOT_TOKEN
 
-# 4. ingest sample catalog
+# 4. start data stores (Docker)
+docker compose up -d              # Redis + Postgres + Qdrant
+
+# 5. ingest the sample catalog -> Postgres + Qdrant
 python -m src.ingest
+```
 
-# 5. run API + bot
-python api/main.py
-python bot/telegram_bot.py  # polling — message your bot from Telegram
+Then run the **two processes** (separate terminals):
+
+```bash
+# Terminal 1 — the API (the brain)
+uvicorn api.main:app --reload
+
+# Terminal 2 — the Telegram bot (the face)
+python -m bot.telegram_bot        # polling; message your bot on Telegram
+```
+
+Open Telegram, find your bot, send `/start`, and chat. 🎉
+
+## 💬 Example conversation
+
+```
+You:  How many HP shampoos are in stock?
+Bot:  There are 2 HP shampoos currently in stock.
+
+You:  Recommend something for dandruff
+Bot:  For dandruff, I'd suggest:
+      - Head & Shoulders 340 ml – Rs.180, 40 in stock
+      - HP Anti-Dandruff Shampoo – Rs.85, 47 in stock
+
+You:  Tell me about Amul butter
+Bot:  Amul Butter (100g) – Rs.56, in stock. Rich, creamy salted table butter...
+You:  How many are left?
+Bot:  There are 140 packs left in stock.        # ← remembered the context
 ```
 
 ---
 
 ## 📊 Status
 
-🚧 **In development** — see the progress tracker in [docs/SCHEDULE.md](docs/SCHEDULE.md).
+✅ **MVP working** — Telegram bot answers product questions via a tool-calling
+agent (RAG + SQL) with conversation memory. See [docs/SCHEDULE.md](docs/SCHEDULE.md).
+Next: cloud deployment (see [docs/CLOUD.md](docs/CLOUD.md)).
 
 ## 📄 License
 
