@@ -97,6 +97,11 @@ python -m bot.telegram_bot        # polling; message your bot on Telegram
 
 Open Telegram, find your bot, send `/start`, and chat. 🎉
 
+## 🎥 Demo
+
+A live demo of the bot answering product questions on Telegram (deployed on GCP):
+**[▶ Watch the demo](docs/demo.mp4)**
+
 ## 💬 Example conversation
 
 ```
