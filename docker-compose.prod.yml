@@ -43,6 +43,7 @@ services:
 
   api:
     build: .
+    image: retail-chatbot:latest      # build ONCE, shared with the bot service
     restart: unless-stopped
     env_file: .env
     environment:
@@ -59,7 +60,7 @@ services:
     command: uvicorn api.main:app --host 0.0.0.0 --port 8000
 
   bot:
-    build: .
+    image: retail-chatbot:latest      # reuse the api image (no second build)
     restart: unless-stopped
     env_file: .env
     environment:
