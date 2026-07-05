@@ -43,6 +43,7 @@ Full details in **[docs/FLOW.md](docs/FLOW.md)**.
 | **[docs/CLOUD.md](docs/CLOUD.md)** | Cloud options, service mapping, cost paths, Cloud Run alternative |
 | **[docs/DEPLOY.md](docs/DEPLOY.md)** | Step-by-step runbook: deploy the full stack to one VM |
 | **[docs/STRUCTURE.md](docs/STRUCTURE.md)** | Every folder & file explained, with use cases and status |
+| **[docs/FUTURE.md](docs/FUTURE.md)** | Post-MVP roadmap: CI/CD, monitoring, fine-tuning, WhatsApp, scale |
 
 ---
 
