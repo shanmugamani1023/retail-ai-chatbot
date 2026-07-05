@@ -78,7 +78,22 @@ def query_inventory_sql(sql_query: str) -> str:
         price NUMERIC, stock INTEGER, unit TEXT, description TEXT
       )
 
-    Example: SELECT name, stock FROM products WHERE name ILIKE '%pepsi%';
+    Valid categories (exact values):
+      'Beverages', 'Snacks', 'Personal Care', 'Household',
+      'Staples', 'Dairy', 'Instant Food'.
+
+    Matching tips (IMPORTANT for correct results):
+    - Use case-insensitive fuzzy matching: name ILIKE '%keyword%'.
+    - For a brand/product family, match the keyword only, e.g.
+      HP products -> name ILIKE '%HP%'; Pepsi -> name ILIKE '%pepsi%'.
+    - Sodas/colas/soft drinks/juice/water are category 'Beverages'
+      (there is no 'soda' category). For concept words, also try
+      (name ILIKE '%x%' OR description ILIKE '%x%').
+    - "in stock" means stock > 0.
+
+    Examples:
+      SELECT COUNT(*) FROM products WHERE name ILIKE '%HP%' AND name ILIKE '%shampoo%';
+      SELECT name, price FROM products WHERE category='Beverages' AND stock>0 ORDER BY price LIMIT 1;
     Only SELECT statements are allowed.
     """
     q = sql_query.strip().rstrip(";")

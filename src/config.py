@@ -11,7 +11,7 @@ class Settings(BaseSettings):
 
     # --- LLM (Groq) ---
     groq_api_key: str = ""
-    llm_model: str = "llama-3.3-70b-versatile"
+    llm_model: str = "openai/gpt-oss-20b"   # reliable tool-calling on Groq
     llm_temperature: float = 0.2
 
     # --- Embeddings (local) ---
