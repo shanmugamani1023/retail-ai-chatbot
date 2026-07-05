@@ -115,6 +115,48 @@ Bot:  There are 140 packs left in stock.        # ← remembered the context
 
 ---
 
+## 🐳 Run the full stack in Docker
+
+Run the **entire app** (API + bot + Redis + Postgres + Qdrant) in containers with
+one command — the same setup used for deployment (`docker-compose.prod.yml`).
+Requires a `.env` with `GROQ_API_KEY` and `TELEGRAM_BOT_TOKEN`.
+
+```bash
+cd retail-ai-chatbot
+
+# build + start everything (5 containers)
+docker compose -f docker-compose.prod.yml up -d --build
+
+# ingest the catalog once (only needed the first time / after CSV changes)
+docker compose -f docker-compose.prod.yml run --rm api python -m src.ingest
+```
+
+Then message your bot on Telegram — it's served entirely from Docker.
+
+### Managing the stack
+
+```bash
+# status
+docker compose -f docker-compose.prod.yml ps
+
+# view logs (live)
+docker compose -f docker-compose.prod.yml logs -f bot     # bot
+docker compose -f docker-compose.prod.yml logs -f api     # API
+docker compose -f docker-compose.prod.yml logs -f         # everything
+
+# stop / start
+docker compose -f docker-compose.prod.yml down            # stop (keeps data)
+docker compose -f docker-compose.prod.yml up -d           # start again
+docker compose -f docker-compose.prod.yml down -v         # stop AND wipe data
+```
+
+> Docker Desktop must be running. On Windows, if `docker` isn't found, ensure
+> `C:\Program Files\Docker\Docker\resources\bin` is on your PATH.
+
+For deploying this stack to a cloud VM, see **[docs/DEPLOY.md](docs/DEPLOY.md)**.
+
+---
+
 ## 📊 Status
 
 ✅ **MVP working** — Telegram bot answers product questions via a tool-calling
